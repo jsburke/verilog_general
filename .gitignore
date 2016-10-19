@@ -1,5 +1,22 @@
 #ignore list for verilog projects
-**/*.*log  #any logs or extensions that might be generated
+**/*.log
+**/*.cmd_log
+**/*.bld
+**/*.ncd
+**/*.ngd
+**/*.pad
+**/*.par
+**/*.pcf
+**/*.ptwx
+**/*.twr
+**/*.twx
+**/*.unroutes
+**/*.xpi
+**/*.map
+**/*.mrp
+**/*.ngm
+**/*.csv
+**/*.txt
 **/*.html
 **/*.gise
 **/*.exe
