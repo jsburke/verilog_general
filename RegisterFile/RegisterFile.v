@@ -64,7 +64,7 @@ end
 // reading block 2
 always @ (posedge clk) begin  
 	if (rst) begin
-		rdData2 <= /*WORD_SIZE-1'd*/0;
+		rdData2 <= 0;
 	end
 	else begin
 		rdData2 <= genReg[rdAddr2];
