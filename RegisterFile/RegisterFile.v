@@ -44,7 +44,7 @@ integer i;
 // writing block
 always @ (posedge clk) begin  
 	if (rst) begin
-		for(i = 0; i < REG_MAX; i = i+1) genReg[i] <= 'd0;
+		for(i = 0; i < REG_MAX; i = i+1) genReg[i] <= 0;
 	end
 	else if (wrtEnable) begin
 		genReg[wrtAddr] <= wrtData;
@@ -54,7 +54,7 @@ end
 // reading block 1
 always @ (posedge clk) begin  
 	if (rst) begin
-		rdData1 <= WORD_SIZE-1'd0;
+		rdData1 <= 0;
 	end
 	else begin
 		rdData1 <= genReg[rdAddr1];
@@ -64,7 +64,7 @@ end
 // reading block 2
 always @ (posedge clk) begin  
 	if (rst) begin
-		rdData2 <= WORD_SIZE-1'd0;
+		rdData2 <= /*WORD_SIZE-1'd*/0;
 	end
 	else begin
 		rdData2 <= genReg[rdAddr2];

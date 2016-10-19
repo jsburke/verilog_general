@@ -32,7 +32,6 @@ module RegisterFile_tb;
 	);
 
 	initial begin
-		// Initialize Inputs
 		clk = 0;
 		rst = 1;
 		rdAddr1 = 0;
@@ -76,13 +75,8 @@ module RegisterFile_tb;
 				rand = $random($stime + rand);
 				rdAddr1 = rand[22:20];
 				rdAddr2 = rand[2:0];
-			/*end else begin
-				rand = $random($stime + rand);
-				rdAddr2 = rand[2:0];*/
 			end
 		end
-		// Add stimulus here
-
 	end
       
 endmodule
