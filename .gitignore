@@ -35,6 +35,7 @@
 **/*.xml
 **/*.ini
 **/*.pdf
+**/*.wdb
 
 # ignore of subdirs
 **/isim/
