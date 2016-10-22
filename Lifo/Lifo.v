@@ -44,7 +44,7 @@ always @ (rst or enable or pushPop or pushData) begin
 	else begin     // reset is low
 		if (enable) begin
 			if (pushPop) begin  // push
-				if (pushPop < DEPTH) begin  // still can fit data
+				if (stackPointer < DEPTH) begin  // still can fit data
 					mem[stackPointer] = pushData;
 					stackPointer = stackPointer + 1;
 					for (i = 0; i < WIDTH; i = i + 1) popData[i] = 1'bz;
