@@ -1,0 +1,44 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////////
+module LinearFeedbackShiftRegister(clk, rst, taps,
+											  result);
+
+parameter WIDTH = 4;
+parameter INIT  = 1;
+
+///////////////////
+// inputs
+///////////////////
+input clk, rst;
+input [WIDTH-1:0] taps;  //defines which bits to XOR in LFSR
+
+////////////////////
+//  OUTPUTS
+////////////////////
+output reg [WIDTH-1:0] result;
+
+////////////////////
+// internal
+////////////////////
+reg [WIDTH-1:0] shReg;
+
+////////////////////
+// hardware
+////////////////////
+
+always @ (posedge clk) begin
+	if (rst) begin
+		shReg = INIT;
+		result = INIT;// okay now finish the thing...
+	end
+	else begin
+		
+	end
+end									  
+
+
+endmodule
