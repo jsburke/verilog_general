@@ -15,7 +15,7 @@ output [3:0]       statusOut;
 
 wire [1:0] signs;
 
-assign signs = {operand1[WIDTH-1], operand1[WIDTH-1]};
+assign signs = {operand1[WIDTH-1], operand2[WIDTH-1]};
 assign {statusOut[ST_CARRY], result} = operand1 + operand2;
 assign statusOut[ST_NEG] = result[WIDTH-1];
 assign statusOut[ST_ZERO] = (result == 0) ? 1 : 0;
