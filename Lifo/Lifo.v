@@ -5,12 +5,12 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module Lifo(rst, enable, pushPop,  //  input
-				data);			        //  bidirectional
+module Lifo(rst, enable, pushPop, pushData,  //  input
+				popData);      			        //  bidirectional
 
-parameter  WIDTH  = 8;
-parameter  DEPTH  = 12;
-localparam PTR_SZ = 32;  //  to be generalized later with something like $clog2()
+parameter WIDTH  = 8;
+parameter DEPTH  = 12;
+parameter PTR_SZ = 16;  //  to be generalized later with something like $clog2()
 
 integer i;
 
@@ -18,50 +18,56 @@ integer i;
 // inputs
 ///////////////////////////
 input rst, enable, pushPop;
+input [WIDTH-1:0] pushData;
 
 ///////////////////////////
 // didrictional data line
 ///////////////////////////
-inout [WIDTH-1:0] data;
+output reg [WIDTH-1:0] popData;
 
 ///////////////////////////
 // internal
 ///////////////////////////
 reg [WIDTH-1:0] mem  [DEPTH-1:0];
 reg [PTR_SZ-1:0] stackPointer;  // 0 means stack empty ||  == DEPTH means stack full
-reg [WIDTH-1:0] inData;
 
 ///////////////////////////
 //  hardware
 ///////////////////////////
-always @ (rst or enable or pushPop) begin
-	if (rst) begin
-		for (i = 0; i < DEPTH;  i = i + 1) mem[i] = 0;
+
+always @ (rst or enable or pushPop or pushData) begin
+	if (rst) begin // reset the internals to zero
 		stackPointer = 0;
-		for (i = 0; i < WIDTH; i = i + 1) inData[i] = 1'bz;
+		for (i = 0; i < DEPTH; i = i + 1) mem[i] = 0;
+		for (i = 0; i < WIDTH; i = i + 1) popData[i] = 1'bz;
 	end
-	else begin
+	else begin     // reset is low
 		if (enable) begin
-			if (pushPop) begin // pushing onto stack
-				if (stackPointer < DEPTH) begin
-					mem[stackPointer] = data;
+			if (pushPop) begin  // push
+				if (pushPop < DEPTH) begin  // still can fit data
+					mem[stackPointer] = pushData;
 					stackPointer = stackPointer + 1;
+					for (i = 0; i < WIDTH; i = i + 1) popData[i] = 1'bz;
+				end
+				else begin // no more room to push
+					for (i = 0; i < WIDTH; i = i + 1) popData[i] = 1'bz;
 				end
 			end
-			else begin  //popping from stack
-				if (stackPointer > 0) begin
-					inData = mem[stackPointer-1];
-					mem[stackPointer-1] = 0;
-					stackPointer = stackPointer - 1;
+			else begin  // pop
+				if (stackPointer > 0) begin  // exists data to pop
+					popData = mem[stackPointer-1];
+					stackPointer = stackPointer - 1;  // can swap this with the line above to not index by -1
+				end
+				else begin  // no data to pop
+					for (i = 0; i < WIDTH; i = i + 1) popData[i] = 1'bz;
 				end
 			end
 		end
-		else begin
-			for (i = 0; i < WIDTH; i = i + 1) inData[i] = 1'bz;
+		else begin // enable is low
+			for (i = 0; i < WIDTH; i = i + 1) popData[i] = 1'bz;			
 		end
 	end
 end
 
-assign data = (~rst && enable && pushPop) ? data : inData;  //  Basically only show data on push, otherwise inData
 
 endmodule
