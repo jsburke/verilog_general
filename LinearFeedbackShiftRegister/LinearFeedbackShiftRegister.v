@@ -4,17 +4,16 @@
 //
 //
 //////////////////////////////////////////////////////////////////////////////////
-module LinearFeedbackShiftRegister(clk, rst, taps,
+module LinearFeedbackShiftRegister(clk, rst,
 											  result);
 
-parameter WIDTH = 4;
+parameter WIDTH = 8;
 parameter INIT  = 1;
 
 ///////////////////
 // inputs
 ///////////////////
 input clk, rst;
-input [WIDTH-1:0] taps;  //defines which bits to XOR in LFSR
 
 ////////////////////
 //  OUTPUTS
@@ -22,22 +21,18 @@ input [WIDTH-1:0] taps;  //defines which bits to XOR in LFSR
 output reg [WIDTH-1:0] result;
 
 ////////////////////
-// internal
-////////////////////
-reg [WIDTH-1:0] shReg;
-
-////////////////////
 // hardware
 ////////////////////
 
+initial begin
+	result = INIT;
+end
+
 always @ (posedge clk) begin
 	if (rst) begin
-		shReg = INIT;
-		result = INIT;// okay now finish the thing...
+		result = INIT;
 	end
-	else begin
-		
-	end
+	else result = {result[0] ^ result[1] ^ result[5], result[WIDTH-1:1]};
 end									  
 
 
