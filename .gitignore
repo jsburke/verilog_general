@@ -36,6 +36,7 @@
 **/*.ini
 **/*.pdf
 **/*.wdb
+ALU/Rotate.v
 
 # ignore of subdirs
 **/isim/
